@@ -12,10 +12,7 @@ import argparse
 import logging
 import logging.config
 import os
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
+from six.moves import configparser
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 from auxiliary import utils
