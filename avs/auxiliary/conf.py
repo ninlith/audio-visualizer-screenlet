@@ -8,6 +8,7 @@
 """Configuration-related classes and functions."""
 
 # pylint: disable=import-error
+from pathlib import Path
 import argparse
 import logging
 import logging.config
@@ -61,42 +62,40 @@ class Configs(object):
     def __init__(self, title):
         # Configuration path.
         if 'LOCALAPPDATA' in os.environ:
-            self.app_config_path = os.path.join(
-                os.environ['LOCALAPPDATA'], title)
+            self.app_config_path = Path(os.environ['LOCALAPPDATA']) / title
         elif 'XDG_CONFIG_HOME' in os.environ:
-            self.app_config_path = os.path.join(
-                os.environ['XDG_CONFIG_HOME'], title)
+            self.app_config_path = Path(os.environ['XDG_CONFIG_HOME']) / title
         else:
-            self.app_config_path = os.path.join(
-                os.environ['HOME'], ".config", title)
+            self.app_config_path = Path(os.environ['HOME']) / ".config" / title
         logger.info("Config path: {}".format(self.app_config_path))
 
         # Load and merge options from default_settings.ini and settings.ini.
         self.settings = MyConfigParser()
-        script_path = os.path.dirname(os.path.realpath(__file__))
-        defaults_file = os.path.join(script_path, "default_settings.ini")
+        script_path = Path(__file__).parent
+        defaults_file = script_path / "default_settings.ini"
         try:
-            self.settings.read_file(open(defaults_file))
+            self.settings.read_file(defaults_file.open())
         except AttributeError:
-            self.settings.readfp(open(defaults_file))  # deprecated
-        self.settings_file = os.path.join(self.app_config_path, "settings.ini")
-        self.settings.read(self.settings_file)
+            self.settings.readfp(defaults_file.open())  # deprecated
+        self.settings_file = self.app_config_path / "settings.ini"
+        self.settings.read(str(self.settings_file))
 
         # Create settings.ini if missing.
-        if not os.path.isfile(self.settings_file):
-            with open(self.settings_file, 'w') as configfile:
+        if not self.settings_file.is_file():
+            self.settings_file.parent.mkdir(parents=True,exist_ok=True)
+            with self.settings_file.open('w') as configfile:
                 self.settings.write(configfile)
 
         # Load state.ini.
-        self.state_file = os.path.join(self.app_config_path, "state.ini")
+        self.state_file = self.app_config_path / "state.ini"
         self.state = MyConfigParser()
-        self.state.read(self.state_file)
+        self.state.read(str(self.state_file))
 
         # Set up watchdog to monitor file system events.
         path = self.app_config_path
-        event_handler = MyWatchdogHandler(patterns=[self.settings_file])
+        event_handler = MyWatchdogHandler(patterns=[str(self.settings_file)])
         observer = Observer()
-        observer.schedule(event_handler, path, recursive=False)
+        observer.schedule(event_handler, str(path), recursive=False)
         observer.start()
 
     def load_state_value(self, section, option):
