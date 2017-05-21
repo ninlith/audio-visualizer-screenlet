@@ -1,5 +1,0 @@
-setuptools
-six
-numpy
-scipy
-vispy
