@@ -12,9 +12,14 @@ Visualizes sound card output (PulseAudio monitor or WASAPI loopback).
 
 ### Debian Stretch
 
+    sudo apt install git virtualenv python3-dev libfftw3-dev python3-numpy \
+    python3-pyqt5 python3-pyqt5.qtopengl python3-scipy python3-vispy \
+    python3-watchdog python3-xlib 
     git clone https://github.com/ninlith/audio-visualizer-screenlet.git
-    sudo apt-get install python3-numpy python3-pyfftw python3-pyqt5 python3-scipy \
-    python3-vispy python3-watchdog python3-xlib
+    cd audio-visualizer-screenlet
+    virtualenv --python=python3 --system-site-packages venv
+    source venv/bin/activate
+    pip install pyfftw
 
 ### Windows (64-bit)
 Use the [installer](https://github.com/ninlith/audio-visualizer-screenlet/releases/).
