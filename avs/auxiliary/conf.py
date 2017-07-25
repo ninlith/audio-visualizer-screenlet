@@ -113,7 +113,7 @@ class Configs(object):
             logger.debug("Adding section [{}] to state".format(section))
             self.state.add_section(section)
         self.state.set(section, option, value)
-        with open(self.state_file, 'w') as configfile:
+        with self.state_file.open('w') as configfile:
             self.state.write(configfile)
 
 
