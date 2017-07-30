@@ -1,0 +1,23 @@
+name: py35
+channels:
+- defaults
+dependencies:
+- mkl=2017.0.3=0
+- numpy=1.13.1=py35_0
+- pip=9.0.1=py35_1
+- python=3.5.3=3
+- pywin32=220=py35_2
+- scipy=0.19.1=np113py35_0
+- setuptools=27.2.0=py35_1
+- six=1.10.0=py35_1
+- vs2015_runtime=14.0.25420=0
+- wheel=0.29.0=py35_0
+- pip:
+  - argh==0.26.2
+  - pathtools==0.1.2
+  - pyfftw==0.10.4
+  - pyqt5==5.9
+  - pyyaml==3.12
+  - sip==4.19.3
+  - vispy==0.4.0
+  - watchdog==0.8.3
