@@ -112,6 +112,10 @@ class Pulserecorder(object):
         ba.minreq    = -1
         ba.fragsize  = -1
 
+        class struct_pa_simple(ctypes.Structure):
+            pass
+        pa.pa_simple_new.restype = ctypes.POINTER(struct_pa_simple)
+
         stream = pa.pa_simple_new(
             None,                # Server name, or NULL for default.
             self.name,           # Client name.
