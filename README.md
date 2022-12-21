@@ -1,7 +1,7 @@
 # audio-visualizer-screenlet
 Visualizes sound card output (PulseAudio monitor or WASAPI loopback).
 
-![screenshot](2022-12-01apt.svg)
+![screenshot](screenshot.png)
 
 ## Installation
 
